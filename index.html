@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usability dalam IMK - Muhammad Daffadin Akram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F6FA;--card:#fff;--ink:#13203A;--muted:#5A6A82;--line:#DCE3EE;--teal:#0F9D8A;--teal-d:#0A7466;--amber:#F4A93C;--blue:#3B6CF0;--rose:#E2566B;
+--h:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--b:'Public Sans','Segoe UI',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--b);background:var(--bg);color:var(--ink);overflow:hidden;line-height:1.6;font-size:17px}
+h1,h2,h3{font-family:var(--h);line-height:1.15;letter-spacing:-.02em}
+h1{font-size:clamp(2.2rem,5.4vw,4.4rem);font-weight:800;max-width:15ch}
+h2{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:800;margin-bottom:.35em;max-width:22ch}
+h3{font-size:1.15rem;font-weight:700;margin-bottom:.25em}
+p{max-width:62ch}
+.lead{color:var(--muted);font-size:1.08rem;margin-bottom:1.6rem}
+.top{position:fixed;inset:0 0 auto 0;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 7vw;z-index:5;font-family:var(--h);font-weight:700;font-size:.95rem}
+.top span:last-child{color:var(--muted);font-family:var(--b);font-weight:500}
+.dot-logo{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--teal);margin-right:8px;box-shadow:7px 0 0 -2px var(--amber)}
+#bar{position:fixed;top:0;left:0;height:4px;background:var(--teal);width:0;transition:width .5s cubic-bezier(.3,.7,.2,1);z-index:6}
+.slide{position:absolute;inset:0;padding:84px 7vw 96px;display:none;overflow-y:auto}
+.slide.active,.slide.leaving{display:flex;flex-direction:column;justify-content:center}
+.slide.leaving{animation:out .32s ease forwards;pointer-events:none}
+.slide.active .a{animation:up .65s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*90ms + 60ms)}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-22px)}}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card p{color:var(--muted);font-size:.95rem}
+.tag{display:inline-block;font-size:.8rem;font-weight:600;padding:3px 12px;border-radius:99px;background:#DFF4F0;color:var(--teal-d);margin-bottom:10px}
+.tag.am{background:#FDEFD6;color:#9A5F00}.tag.bl{background:#E3EAFE;color:#2748B8}.tag.ro{background:#FBE3E7;color:#B02E45}
+.ref{margin-top:18px;font-size:.82rem;color:var(--muted);border-left:3px solid var(--amber);padding-left:12px;max-width:80ch}
+/* cover */
+.id{margin-top:2rem;display:inline-grid;grid-template-columns:auto auto;gap:4px 22px;padding:18px 24px;border-radius:14px;background:var(--ink);color:#fff;font-size:.95rem}
+.id b{color:var(--amber);font-weight:500}
+.hint{margin-top:1.4rem;color:var(--muted);font-size:.9rem}
+/* venn */
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.venn{position:relative;width:340px;height:320px;margin:auto}
+.venn i{position:absolute;width:190px;height:190px;border-radius:50%;mix-blend-mode:multiply;display:grid;place-items:center;font-style:normal;font-family:var(--h);font-weight:700;font-size:.95rem}
+.venn i:nth-child(1){left:0;top:0;background:#9fe0d6}.venn i:nth-child(2){right:0;top:0;background:#fbd391}.venn i:nth-child(3){left:75px;bottom:0;background:#b9c9fb}
+.venn i span{position:absolute}
+.venn .c1{left:28px;top:60px}.venn .c2{right:22px;top:60px}.venn .c3{left:0;right:0;bottom:30px;text-align:center}
+.venn small{position:absolute;bottom:-6px;left:0;right:0;text-align:center;color:var(--muted);font-size:.8rem}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;counter-reset:s}
+.step{position:relative}
+.step:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--h);font-weight:700;margin-bottom:12px}
+.loop{margin-top:16px;padding:12px 18px;border:1.5px dashed var(--teal);border-radius:12px;color:var(--teal-d);font-weight:500;font-size:.95rem;max-width:none}
+/* formula */
+.f{font-family:var(--h);font-weight:700;color:var(--ink);background:#EEF2F8;border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.92rem}
+/* phase */
+.phase{border-top:5px solid var(--teal)}.phase:nth-child(2){border-color:var(--amber)}.phase:nth-child(3){border-color:var(--blue)}
+ul.l{list-style:none;margin-top:8px}ul.l li{position:relative;padding-left:18px;margin:5px 0;font-size:.95rem;color:var(--muted)}
+ul.l li:before{content:"";position:absolute;left:0;top:.65em;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+.heur{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 16px}
+.heur div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.92rem}
+.heur b{font-family:var(--h);margin-right:6px;color:var(--teal-d)}
+/* SUS */
+.sus{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:start}
+.qs{max-height:56vh;overflow-y:auto;padding-right:6px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:10px}
+.q p{font-size:.93rem;margin-bottom:8px;max-width:none}
+.opts{display:flex;gap:6px;align-items:center}
+.opts button{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 0;font:600 .9rem var(--b);color:var(--muted);cursor:pointer;transition:all .18s}
+.opts button:hover{border-color:var(--teal)}
+.opts button.on{background:var(--teal);border-color:var(--teal);color:#fff;transform:scale(1.06)}
+.ends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:4px}
+.res{position:sticky;top:0;text-align:center}
+.score{font-family:var(--h);font-weight:800;font-size:4.6rem;line-height:1;transition:color .3s}
+.meter{height:12px;border-radius:99px;background:linear-gradient(90deg,var(--rose) 0 51%,var(--amber) 51% 68%,#7CCB6B 68% 80%,var(--teal) 80%);position:relative;margin:18px 0 8px}
+.meter i{position:absolute;top:-5px;left:0;width:4px;height:22px;background:var(--ink);border-radius:3px;transition:left .6s cubic-bezier(.2,.7,.2,1)}
+.rst{margin-top:10px;border:1.5px solid var(--line);background:none;border-radius:10px;padding:8px 18px;font:600 .9rem var(--b);cursor:pointer;color:var(--ink)}
+.rst:hover{background:var(--ink);color:#fff}
+.refs li{margin:8px 0;font-size:.88rem;color:var(--muted);max-width:90ch;list-style:none;padding-left:16px;text-indent:-16px}
+/* nav */
+.nav{position:fixed;bottom:0;left:0;right:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 7vw;z-index:5;background:linear-gradient(transparent,var(--bg) 40%)}
+.nav button{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;transition:all .2s;color:var(--ink)}
+.nav button:hover{background:var(--ink);color:#fff}
+.dots{display:flex;gap:8px}.dots b{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer;transition:all .3s}
+.dots b.on{background:var(--teal);width:26px;border-radius:9px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media(max-width:900px){body{font-size:16px}.g2,.g3,.g5,.split,.sus,.steps,.heur{grid-template-columns:1fr}.slide{justify-content:flex-start!important;padding-top:76px}.venn{transform:scale(.85)}.qs{max-height:none}.res{position:static}.dots{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.slide.active .a{opacity:1}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="top"><span><i class="dot-logo"></i>Usability dalam IMK</span><span id="count">1 / 11</span></div>
+
+<main id="deck">
+
+<!-- 1 Cover -->
+<section class="slide active">
+  <p class="a tag" style="--i:0;width:fit-content">Interaksi Manusia dan Komputer</p>
+  <h1 class="a" style="--i:1">Usability: seberapa mudah sebuah sistem dipakai</h1>
+  <p class="a lead" style="--i:2;margin-top:1rem">Definisi, atribut, proses, pengukuran, dan siklus hidup usability, lengkap dengan kalkulator SUS yang bisa dicoba.</p>
+  <div class="a id" style="--i:3"><b>Nama</b><span>Muhammad Daffadin Akram</span><b>NIM</b><span>2517020076</span><b>Kelas</b><span>3-SIC</span><b>Mata kuliah</b><span>Interaksi Manusia dan Komputer</span></div>
+  <p class="a hint" style="--i:4">Gunakan tombol panah di keyboard atau tombol di bawah untuk berpindah slide.</p>
+</section>
+
+<!-- 2 Definisi -->
+<section class="slide">
+  <div class="split">
+    <div>
+      <h2 class="a" style="--i:0">Definisi usability dalam IMK</h2>
+      <p class="a lead" style="--i:1">Usability (kebergunaan) adalah atribut kualitas yang mengukur seberapa mudah antarmuka pengguna dapat digunakan.</p>
+      <div class="a card" style="--i:2"><span class="tag">ISO 9241-11</span><p style="color:var(--ink)">Sejauh mana suatu produk atau sistem dapat digunakan oleh pengguna tertentu untuk mencapai tujuan tertentu dengan <b>efektivitas</b>, <b>efisiensi</b>, dan <b>kepuasan</b> dalam konteks penggunaan tertentu.</p></div>
+      <p class="a ref" style="--i:3">Jokela, T., Iivari, N., Matero, J., &amp; Karukka, M. (2003). The standard of user-centered design and the standard definition of usability: Analyzing ISO 13407 against ISO 9241-11. <i>CLIHC '03</i>, ACM, 53-60.</p>
+    </div>
+    <div class="a venn" style="--i:3"><i><span class="c1">Efektivitas</span></i><i><span class="c2">Efisiensi</span></i><i><span class="c3">Kepuasan</span></i><small>Ketiganya dinilai dalam konteks penggunaan</small></div>
+  </div>
+</section>
+
+<!-- 3 Penting -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Kenapa usability itu penting</h2>
+  <p class="a lead" style="--i:1">Usability menjadi krusial dalam IMK dan pengembangan perangkat lunak karena tiga hal.</p>
+  <div class="grid g3">
+    <div class="a card" style="--i:2"><span class="tag">Produktivitas</span><h3>Tugas selesai lebih cepat</h3><p>Pengguna menyelesaikan pekerjaan dengan waktu lebih singkat dan tingkat kesalahan (error rate) lebih rendah.</p></div>
+    <div class="a card" style="--i:3"><span class="tag am">Biaya</span><h3>Menekan biaya pelatihan dan support</h3><p>Antarmuka yang intuitif mengurangi kebutuhan dokumentasi rumit dan panggilan ke helpdesk.</p></div>
+    <div class="a card" style="--i:4"><span class="tag bl">Retensi</span><h3>Pengguna lebih puas dan bertahan</h3><p>Antarmuka yang membingungkan membuat pengguna frustrasi lalu pindah ke sistem pesaing.</p></div>
+  </div>
+  <div class="a card" style="--i:5;margin-top:16px;background:var(--ink);border:0"><p style="color:#fff;max-width:none"><b style="color:var(--amber)">Prinsip praktis:</b> memperbaiki masalah usability saat tahap desain jauh lebih murah daripada setelah sistem dirilis.</p></div>
+  <p class="a ref" style="--i:6">Gould, J. D., &amp; Lewis, C. (1985). Designing for usability: Key principles and what designers think. <i>Communications of the ACM, 28</i>(3), 300-311.</p>
+</section>
+
+<!-- 4 Atribut -->
+<section class="slide">
+  <h2 class="a" style="--i:0">5 atribut usability</h2>
+  <p class="a lead" style="--i:1">Berdasarkan model klasik Jakob Nielsen (1993) dan model konsolidasi internasional.</p>
+  <div class="grid g5">
+    <div class="a card" style="--i:2"><h3>Learnability</h3><p>Seberapa mudah pengguna baru menyelesaikan tugas dasar saat pertama memakai sistem.</p></div>
+    <div class="a card" style="--i:3"><h3>Efficiency</h3><p>Seberapa cepat pengguna bekerja setelah mempelajari desainnya.</p></div>
+    <div class="a card" style="--i:4"><h3>Memorability</h3><p>Seberapa mudah pengguna mengingat cara kerja sistem setelah lama tidak memakainya.</p></div>
+    <div class="a card" style="--i:5"><h3>Errors</h3><p>Jumlah dan tingkat keparahan kesalahan, serta kemudahan pemulihannya (error recovery).</p></div>
+    <div class="a card" style="--i:6"><h3>Satisfaction</h3><p>Seberapa nyaman dan memuaskan antarmuka secara subjektif.</p></div>
+  </div>
+  <div class="a card" style="--i:7;margin-top:16px"><span class="tag am">Materi tambahan</span><p>Nielsen juga membedakan <b>utility</b> (apakah fungsi sistem memenuhi kebutuhan) dan <b>usability</b>. Keduanya membentuk <b>usefulness</b>: sistem harus punya fitur yang tepat <i>dan</i> mudah dipakai.</p></div>
+  <p class="a ref" style="--i:8">Seffah, A., Donyaee, M., Kline, R. B., &amp; Padda, H. K. (2006). Usability measurement and metrics: A consolidated model. <i>Software Quality Journal, 14</i>(2), 159-178.</p>
+</section>
+
+<!-- 5 Langkah -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Langkah rekayasa usability</h2>
+  <p class="a lead" style="--i:1">Proses berbasis User-Centered Design (UCD) berjalan berurutan dan berulang.</p>
+  <div class="steps">
+    <div class="a card step" style="--i:2"><h3>Pahami konteks</h3><p>Siapa penggunanya, apa tujuannya, dan di lingkungan seperti apa mereka memakai sistem.</p></div>
+    <div class="a card step" style="--i:3"><h3>Tentukan persyaratan</h3><p>Tetapkan standar dan target usability yang ingin dicapai.</p></div>
+    <div class="a card step" style="--i:4"><h3>Rancang dan buat prototipe</h3><p>Susun wireframe dan prototipe interaktif.</p></div>
+    <div class="a card step" style="--i:5"><h3>Evaluasi</h3><p>Uji prototipe bersama pengguna nyata (usability testing).</p></div>
+    <div class="a card step" style="--i:6"><h3>Iterasi</h3><p>Perbaiki desain berdasarkan temuan sampai kriteria terpenuhi.</p></div>
+  </div>
+  <p class="a loop" style="--i:7">Jika target belum tercapai, kembali ke langkah 3 dan ulangi sampai kriteria usability terpenuhi.</p>
+  <p class="a ref" style="--i:8">Gulliksen, J., Göransson, B., Boivie, I., Blomkvist, S., Persson, J., &amp; Cajander, Å. (2003). Key principles for user-centred systems design. <i>Behaviour &amp; Information Technology, 22</i>(6), 397-409.</p>
+</section>
+
+<!-- 6 Metode -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Metode pengukuran usability</h2>
+  <p class="a lead" style="--i:1">Pengukuran dibedakan menjadi kinerja (objektif) dan kepuasan (subjektif).</p>
+  <div class="grid g3">
+    <div class="a card" style="--i:2"><span class="tag">Kinerja kuantitatif</span><h3>Angka dari perilaku nyata</h3>
+      <div class="f">Completion rate = berhasil ÷ total × 100%</div>
+      <div class="f">Error rate = kesalahan ÷ percobaan</div>
+      <p>Task completion time: waktu rata-rata mengerjakan tugas. Contoh: 8 dari 10 peserta berhasil berarti completion rate 80%.</p></div>
+    <div class="a card" style="--i:3"><span class="tag am">Subjektif terstandar</span><h3>Kuesioner baku</h3>
+      <ul class="l"><li><b>SUS</b>: 10 pernyataan, skor 0-100</li><li><b>SEQ</b>: satu pertanyaan kemudahan tugas</li><li><b>CSUQ</b>: kuesioner kepuasan sistem komputer</li></ul></div>
+    <div class="a card" style="--i:4"><span class="tag bl">Kualitatif dan inspeksi</span><h3>Menggali alasan di balik angka</h3>
+      <ul class="l"><li><b>Heuristic evaluation</b> oleh pakar UX</li><li><b>Think-aloud protocol</b>: pengguna berbicara sambil memakai sistem</li></ul></div>
+  </div>
+  <p class="a ref" style="--i:5">Bangor, A., Kortum, P. T., &amp; Miller, J. T. (2008). An empirical evaluation of the System Usability Scale. <i>International Journal of Human-Computer Interaction, 24</i>(6), 574-594.</p>
+</section>
+
+<!-- 7 Siklus -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Siklus hidup usability</h2>
+  <p class="a lead" style="--i:1">Model Usability Engineering Lifecycle dari Jakob Nielsen terbagi ke dalam tiga fase.</p>
+  <div class="grid g3">
+    <div class="a card phase" style="--i:2"><h3>Pra-desain</h3><p>Pre-design phase</p><ul class="l"><li>Field study</li><li>Analisis tugas pengguna</li><li>Analisis kompetitor</li><li>Penetapan tujuan usability</li></ul></div>
+    <div class="a card phase" style="--i:3"><h3>Desain dan pengembangan</h3><p>Design phase</p><ul class="l"><li>Panduan antarmuka (design guidelines)</li><li>Prototipe kertas dan interaktif</li><li>Pengujian pengguna berulang</li></ul></div>
+    <div class="a card phase" style="--i:4"><h3>Pasca-peluncuran</h3><p>Post-design phase</p><ul class="l"><li>Umpan balik dari penggunaan lapangan</li><li>Evaluasi pasca-rilis</li><li>Bahan perbaikan versi berikutnya</li></ul></div>
+  </div>
+  <p class="a ref" style="--i:5">Nielsen, J. (1992). The usability engineering life cycle. <i>Computer (IEEE), 25</i>(3), 12-22.</p>
+</section>
+
+<!-- 8 Heuristik -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Tambahan: 10 heuristik Nielsen</h2>
+  <p class="a lead" style="--i:1">Daftar acuan yang dipakai pakar saat melakukan heuristic evaluation.</p>
+  <div class="heur">
+    <div class="a" style="--i:2"><b>1</b>Visibilitas status sistem</div>
+    <div class="a" style="--i:2"><b>2</b>Kesesuaian sistem dengan dunia nyata</div>
+    <div class="a" style="--i:3"><b>3</b>Kontrol dan kebebasan pengguna</div>
+    <div class="a" style="--i:3"><b>4</b>Konsistensi dan standar</div>
+    <div class="a" style="--i:4"><b>5</b>Pencegahan kesalahan</div>
+    <div class="a" style="--i:4"><b>6</b>Mengenali lebih baik daripada mengingat</div>
+    <div class="a" style="--i:5"><b>7</b>Fleksibilitas dan efisiensi penggunaan</div>
+    <div class="a" style="--i:5"><b>8</b>Desain estetis dan minimalis</div>
+    <div class="a" style="--i:6"><b>9</b>Bantu pengguna mengenali dan memulihkan kesalahan</div>
+    <div class="a" style="--i:6"><b>10</b>Bantuan dan dokumentasi</div>
+  </div>
+  <p class="a ref" style="--i:7">Nielsen, J. (1994). Enhancing the explanatory power of usability heuristics. <i>Proceedings of CHI '94</i>, ACM, 152-158.</p>
+</section>
+
+<!-- 9 SUS -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Coba hitung skor SUS</h2>
+  <p class="a lead" style="--i:1">Pilih 1 (sangat tidak setuju) sampai 5 (sangat setuju) untuk sistem yang ingin dinilai.</p>
+  <div class="sus">
+    <div class="a qs" style="--i:2" id="qs"></div>
+    <div class="a card res" style="--i:3">
+      <p id="prog" style="margin:0 auto 6px;color:var(--muted)">Terjawab 0 dari 10</p>
+      <div class="score" id="score">-</div>
+      <div class="meter"><i id="pin"></i></div>
+      <h3 id="grade">Jawab semua pernyataan</h3>
+      <p id="note" style="margin:6px auto 0">Rumus: item ganjil = skor − 1, item genap = 5 − skor, jumlahkan lalu kalikan 2,5.</p>
+      <button class="rst" id="rst">Ulangi</button>
+    </div>
+  </div>
+</section>
+
+<!-- 10 Kesimpulan -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Kesimpulan</h2>
+  <div class="grid g2">
+    <div class="a card" style="--i:1"><h3>Usability itu terukur</h3><p>Efektivitas, efisiensi, dan kepuasan bisa diukur lewat angka dan kuesioner.</p></div>
+    <div class="a card" style="--i:2"><h3>Lima atribut jadi acuan</h3><p>Learnability, efficiency, memorability, errors, dan satisfaction membantu menilai desain.</p></div>
+    <div class="a card" style="--i:3"><h3>Prosesnya berulang</h3><p>Pahami pengguna, buat prototipe, uji, lalu perbaiki sampai target tercapai.</p></div>
+    <div class="a card" style="--i:4"><h3>Mulai sejak sebelum desain</h3><p>Usability dikerjakan di tiga fase, dari pra-desain sampai pasca-peluncuran.</p></div>
+  </div>
+</section>
+
+<!-- 11 Pustaka -->
+<section class="slide">
+  <h2 class="a" style="--i:0">Daftar pustaka</h2>
+  <ul class="refs a" style="--i:1">
+    <li>Bangor, A., Kortum, P. T., &amp; Miller, J. T. (2008). An empirical evaluation of the System Usability Scale. <i>International Journal of Human-Computer Interaction, 24</i>(6), 574-594.</li>
+    <li>Gould, J. D., &amp; Lewis, C. (1985). Designing for usability: Key principles and what designers think. <i>Communications of the ACM, 28</i>(3), 300-311.</li>
+    <li>Gulliksen, J., Göransson, B., Boivie, I., Blomkvist, S., Persson, J., &amp; Cajander, Å. (2003). Key principles for user-centred systems design. <i>Behaviour &amp; Information Technology, 22</i>(6), 397-409.</li>
+    <li>Jokela, T., Iivari, N., Matero, J., &amp; Karukka, M. (2003). The standard of user-centered design and the standard definition of usability: Analyzing ISO 13407 against ISO 9241-11. <i>CLIHC '03</i>, ACM, 53-60.</li>
+    <li>Nielsen, J. (1992). The usability engineering life cycle. <i>Computer (IEEE), 25</i>(3), 12-22.</li>
+    <li>Nielsen, J. (1994). Enhancing the explanatory power of usability heuristics. <i>Proceedings of CHI '94</i>, ACM, 152-158.</li>
+    <li>Seffah, A., Donyaee, M., Kline, R. B., &amp; Padda, H. K. (2006). Usability measurement and metrics: A consolidated model. <i>Software Quality Journal, 14</i>(2), 159-178.</li>
+  </ul>
+  <p class="a lead" style="--i:2;margin-top:1.2rem">Terima kasih.</p>
+</section>
+</main>
+
+<nav class="nav">
+  <button id="prev" aria-label="Slide sebelumnya">←</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Slide berikutnya">→</button>
+</nav>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')],N=slides.length;
+let cur=0,busy=false;
+const dots=document.getElementById('dots'),bar=document.getElementById('bar'),count=document.getElementById('count');
+slides.forEach((_,i)=>{const b=document.createElement('b');b.onclick=()=>go(i);dots.appendChild(b)});
+function ui(){[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===cur));bar.style.width=((cur+1)/N*100)+'%';count.textContent=(cur+1)+' / '+N}
+function go(n){
+  if(n<0||n>=N||n===cur||busy)return;busy=true;
+  const old=slides[cur];old.classList.add('leaving');old.classList.remove('active');
+  cur=n;ui();
+  setTimeout(()=>{old.classList.remove('leaving');slides[cur].classList.add('active');slides[cur].scrollTop=0;busy=false},320);
+}
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'){go(cur+1)}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){go(cur-1)}
+});
+ui();
+
+/* SUS */
+const Q=["Saya pikir saya akan sering menggunakan sistem ini.","Saya merasa sistem ini terlalu rumit tanpa perlu.","Saya merasa sistem ini mudah digunakan.","Saya perlu bantuan orang teknis untuk dapat menggunakan sistem ini.","Saya merasa fungsi-fungsi dalam sistem ini terintegrasi dengan baik.","Saya merasa ada terlalu banyak ketidakkonsistenan dalam sistem ini.","Saya membayangkan kebanyakan orang akan belajar menggunakan sistem ini dengan cepat.","Saya merasa sistem ini sangat merepotkan untuk digunakan.","Saya merasa sangat percaya diri menggunakan sistem ini.","Saya perlu belajar banyak hal sebelum bisa menggunakan sistem ini."];
+const ans=Array(10).fill(0),qs=document.getElementById('qs');
+Q.forEach((t,i)=>{
+  const d=document.createElement('div');d.className='q';
+  d.innerHTML='<p>'+(i+1)+'. '+t+'</p><div class="opts">'+[1,2,3,4,5].map(v=>'<button data-v="'+v+'" aria-label="Skor '+v+'">'+v+'</button>').join('')+'</div>';
+  d.querySelectorAll('button').forEach(b=>b.onclick=()=>{ans[i]=+b.dataset.v;d.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));calc()});
+  qs.appendChild(d);
+});
+function calc(){
+  const done=ans.filter(Boolean).length;
+  document.getElementById('prog').textContent='Terjawab '+done+' dari 10';
+  const s=document.getElementById('score'),g=document.getElementById('grade'),p=document.getElementById('pin');
+  if(done<10){s.textContent='-';s.style.color='var(--ink)';g.textContent='Jawab semua pernyataan';p.style.left='0';return}
+  let sum=0;ans.forEach((v,i)=>sum+=(i%2===0)?v-1:5-v);
+  const sc=sum*2.5;
+  s.textContent=sc%1?sc.toFixed(1):sc;
+  p.style.left='calc('+sc+'% - 2px)';
+  let label,col;
+  if(sc<51){label='Buruk: perlu perbaikan besar';col='var(--rose)'}
+  else if(sc<68){label='Di bawah rata-rata';col='#C9851B'}
+  else if(sc<80){label='Baik: di atas rata-rata (68)';col='#4E9E3F'}
+  else if(sc<90){label='Sangat baik';col='var(--teal)'}
+  else{label='Terbaik';col='var(--teal-d)'}
+  g.textContent=label;s.style.color=col;
+}
+document.getElementById('rst').onclick=()=>{ans.fill(0);document.querySelectorAll('.opts button').forEach(b=>b.classList.remove('on'));calc()};
+</script>
+</body>
+</html>
